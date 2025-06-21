@@ -1,4 +1,4 @@
-package com.onlinejudge.exception;
+package com.cloudgallery.exception;
 
 import lombok.Data;
 import lombok.Getter;

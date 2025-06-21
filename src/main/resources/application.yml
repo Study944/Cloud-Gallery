@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: cloud-gallery
+server:
+  port: 8000

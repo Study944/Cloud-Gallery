@@ -1,7 +1,7 @@
-package com.onlinejudge.common;
+package com.cloudgallery.common;
 
-import com.onlinejudge.exception.BusinessException;
-import com.onlinejudge.exception.ErrorCode;
+import com.cloudgallery.exception.BusinessException;
+import com.cloudgallery.exception.ErrorCode;
 
 /**
  * 抛异常工具类

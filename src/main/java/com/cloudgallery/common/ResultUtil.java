@@ -1,6 +1,7 @@
-package com.onlinejudge.common;
+package com.cloudgallery.common;
 
-import com.onlinejudge.exception.ErrorCode;
+
+import com.cloudgallery.exception.ErrorCode;
 
 /**
  * 封装返回工具类

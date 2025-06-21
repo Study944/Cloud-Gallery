@@ -1,7 +1,7 @@
-package com.onlinejudge.exception;
+package com.cloudgallery.exception;
 
-import com.onlinejudge.common.BaseResponse;
-import com.onlinejudge.common.ResultUtil;
+import com.cloudgallery.common.BaseResponse;
+import com.cloudgallery.common.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
      * @param e
      */
     @ExceptionHandler(BusinessException.class)
-    public BaseResponse<?>businessExceptionHandler(BusinessException e) {
+    public BaseResponse<?> businessExceptionHandler(BusinessException e) {
         log.error("BusinessException:", e);
         return ResultUtil.error(e.getCode(), e.getMessage());
     }

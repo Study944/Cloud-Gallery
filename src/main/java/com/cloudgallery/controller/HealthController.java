@@ -1,7 +1,7 @@
-package com.onlinejudge.controller;
+package com.cloudgallery.controller;
 
-import com.onlinejudge.common.BaseResponse;
-import com.onlinejudge.common.ResultUtil;
+import com.cloudgallery.common.BaseResponse;
+import com.cloudgallery.common.ResultUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
