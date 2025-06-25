@@ -1,4 +1,4 @@
-package com.cloudgallery.model.dto;
+package com.cloudgallery.model.dto.user;
 
 import lombok.Data;
 

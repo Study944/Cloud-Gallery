@@ -1,16 +1,15 @@
 package com.cloudgallery.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudgallery.annotation.UserRole;
 import com.cloudgallery.common.BaseResponse;
 import com.cloudgallery.common.ResultUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.ErrorCode;
-import com.cloudgallery.model.dto.UserDto;
-import com.cloudgallery.model.dto.UserPageDto;
-import com.cloudgallery.model.dto.UserUpdateDto;
+import com.cloudgallery.model.dto.user.UserDto;
+import com.cloudgallery.model.dto.user.UserPageDto;
+import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
 import com.cloudgallery.model.vo.UserVO;
 import com.cloudgallery.service.UserService;

@@ -1,8 +1,8 @@
 package com.cloudgallery.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.cloudgallery.model.dto.UserPageDto;
-import com.cloudgallery.model.dto.UserUpdateDto;
+import com.cloudgallery.model.dto.user.UserPageDto;
+import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloudgallery.model.vo.UserVO;
