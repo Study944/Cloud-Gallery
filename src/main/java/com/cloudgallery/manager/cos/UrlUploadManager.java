@@ -23,16 +23,26 @@ public class UrlUploadManager extends ImageUploadTemplate{
                 !url.startsWith("http://") && !url.startsWith("https://"),
                 ErrorCode.PARAMS_ERROR, "请求协议错误");
         // 2.校验文件后缀
-        HttpResponse httpResponse = HttpUtil.createRequest(Method.HEAD, url).execute();
+        // 修改为 GET 请求以获取完整响应头
+        HttpResponse httpResponse = HttpUtil.createRequest(Method.GET, url).execute();
         ThrowUtil.throwIf(!httpResponse.isOk(), ErrorCode.PARAMS_ERROR, "请求url错误");
         String contentType = httpResponse.header("Content-Type");
         List<String> ALLOW_CONTENT_TYPE = List.of("image/jpg","image/jpeg", "image/png", "image/gif");
-        ThrowUtil.throwIf(!ALLOW_CONTENT_TYPE.contains(contentType), ErrorCode.PARAMS_ERROR, "url图片格式错误");
-        imageSuffix = contentType.substring(contentType.lastIndexOf("/") + 1);
+        
+        // 保留原有扩展名校验逻辑作为兜底
+        if (!ALLOW_CONTENT_TYPE.contains(contentType)) {
+            String path = url.split("\\?")[0]; // 去除查询参数
+            String ext = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
+            ThrowUtil.throwIf(!List.of("jpg","jpeg","png","gif").contains(ext), 
+                ErrorCode.PARAMS_ERROR, "url图片格式错误");
+            imageSuffix = ext;
+        } else {
+            imageSuffix = contentType.substring(contentType.lastIndexOf("/") + 1);
+        }
         // 3.校验文件大小
         final long maxSize = 1024 * 1024 * 10;
         ThrowUtil.throwIf(httpResponse.contentLength() > maxSize, ErrorCode.PARAMS_ERROR, "文件大小不能超过10M");
-        // 4.关闭流
+        // 4.关闭流（GET请求需要显式关闭）
         httpResponse.close();
     }
 

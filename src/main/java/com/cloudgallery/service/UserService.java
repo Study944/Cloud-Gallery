@@ -1,7 +1,7 @@
 package com.cloudgallery.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.cloudgallery.model.dto.user.UserPageDto;
+import com.cloudgallery.model.dto.user.UserQueryDto;
 import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -45,10 +45,10 @@ public interface UserService extends IService<User> {
     /**
      * 更新用户信息-用户
      */
-    UserVO updateUser(UserUpdateDto userUpdateDto,HttpServletRequest request);
+    UserVO updateUser(UserUpdateDto userUpdateDto,User loginUser);
 
     /**
      * 获取查询条件
      */
-    Wrapper<User> getQueryWrapper(UserPageDto userPageDto);
+    Wrapper<User> getQueryWrapper(UserQueryDto userQueryDto);
 }

@@ -3,7 +3,7 @@ package com.cloudgallery.model.dto.user;
 import lombok.Data;
 
 @Data
-public class UserPageDto {
+public class UserQueryDto {
     /**
      * 当前页
      */

@@ -2,6 +2,8 @@ package com.cloudgallery.manager.cos;
 
 import com.cloudgallery.config.CosClientConfig;
 import com.qcloud.cos.COSClient;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.COSObject;
 import com.qcloud.cos.model.GetObjectRequest;
 import com.qcloud.cos.model.PutObjectRequest;
@@ -62,14 +64,33 @@ public class CosManager {
      * @param key
      * @return COSObject
      */
-    public COSObject downloadFile(String key) {
+    public COSObject downloadFile(String url) {
         // 1.获取存储桶名称
         String bucket = cosClientConfig.getBUCKET();
+        String key = url.substring(57);
         // 2.创建下载请求
         GetObjectRequest request = new GetObjectRequest(bucket, key);
         // 3.下载
         COSObject cosObject = cosClient.getObject(request);
         return cosObject;
+    }
+
+    /**
+     * 图片删除
+     */
+    public boolean deleteFile(String url) {
+        try {
+            String bucket = cosClientConfig.getBUCKET();
+            String key = url.substring(57);
+            cosClient.deleteObject(bucket, key);
+            return true; // 删除成功
+        } catch (CosServiceException e) {
+            System.err.println("删除失败: " + e.getMessage());
+            return false; // 删除失败
+        } catch (CosClientException e) {
+            System.err.println("删除失败: " + e.getMessage());
+            return false; // 删除失败
+        }
     }
 
 }

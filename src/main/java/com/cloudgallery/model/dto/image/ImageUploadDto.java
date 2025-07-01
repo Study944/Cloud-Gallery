@@ -18,6 +18,11 @@ public class ImageUploadDto{
     private String url;
 
     /**
+     * 空间id
+     */
+    private Long spaceId;
+
+    /**
      * 描述
      */
     private String description;

@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cloudgallery.common.RoleUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.constant.UserConstant;
 import com.cloudgallery.exception.ErrorCode;
-import com.cloudgallery.model.dto.user.UserPageDto;
+import com.cloudgallery.model.dto.user.UserQueryDto;
 import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
-import com.cloudgallery.model.enums.UserEnums;
 import com.cloudgallery.model.vo.UserVO;
 import com.cloudgallery.service.UserService;
 import com.cloudgallery.mapper.UserMapper;
@@ -135,15 +135,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return BeanUtil.copyProperties(user, UserVO.class);
     }
 
+    /**
+     * 更新用户信息-用户
+     * @param userUpdateDto
+     * @param request
+     */
     @Override
-    public UserVO updateUser(UserUpdateDto userUpdateDto,HttpServletRequest request) {
+    public UserVO updateUser(UserUpdateDto userUpdateDto,User loginUser) {
         // 1.参数校验
         ThrowUtil.throwIf(userUpdateDto.getId() == null, ErrorCode.PARAMS_ERROR);
         // 2.权限校验，只能修改自己的信息（当前登录用户ID==参数ID||当前登录用户为管理员）
-        User loginUser = getLoginUser(request);
-        ThrowUtil.throwIf(
-                !loginUser.getId().equals(userUpdateDto.getId())&&!loginUser.getRole().equals(UserEnums.ADMIN.getValue()),
-                ErrorCode.NO_AUTH_ERROR);
+        RoleUtil.verifyRole(loginUser, userUpdateDto.getId());
         // 3.更新用户
         User targetUser = getById(userUpdateDto.getId());
         ThrowUtil.throwIf(targetUser == null, ErrorCode.NOT_FOUND_ERROR, "用户不存在");
@@ -158,13 +160,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Wrapper<User> getQueryWrapper(UserPageDto userPageDto) {
+    public Wrapper<User> getQueryWrapper(UserQueryDto userQueryDto) {
         // 1.获取查询信息
-        String sortField = userPageDto.getSortField();
-        String sortOrder = userPageDto.getSortOrder();
-        String name = userPageDto.getName();
-        String account = userPageDto.getAccount();
-        Integer sex = userPageDto.getSex();
+        String sortField = userQueryDto.getSortField();
+        String sortOrder = userQueryDto.getSortOrder();
+        String name = userQueryDto.getName();
+        String account = userQueryDto.getAccount();
+        Integer sex = userQueryDto.getSex();
         // 2.创建查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(name), "name", name);

@@ -10,17 +10,26 @@
             <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="format" column="format" jdbcType="VARCHAR"/>
             <result property="label" column="label" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="auditStatus" column="audit_status" jdbcType="TINYINT"/>
+            <result property="auditReason" column="audit_reason" jdbcType="VARCHAR"/>
             <result property="size" column="size" jdbcType="INTEGER"/>
             <result property="width" column="width" jdbcType="INTEGER"/>
             <result property="height" column="height" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="auditId" column="audit_id" jdbcType="TINYINT"/>
+            <result property="spaceId" column="space_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,url,
-        user_id,description,label,
-        size,width,height,
-        create_time
+        user_id,description,format,
+        label,status,audit_status,
+        audit_reason,size,width,
+        height,create_time,update_time,
+        audit_id,space_id
     </sql>
 </mapper>

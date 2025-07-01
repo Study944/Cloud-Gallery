@@ -8,7 +8,7 @@ import com.cloudgallery.common.ResultUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.ErrorCode;
 import com.cloudgallery.model.dto.user.UserDto;
-import com.cloudgallery.model.dto.user.UserPageDto;
+import com.cloudgallery.model.dto.user.UserQueryDto;
 import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
 import com.cloudgallery.model.vo.UserVO;
@@ -119,14 +119,14 @@ public class UserController {
     /**
      * 编辑用户-用户
      * @param userUpdateDto
-     * @param request
      */
     @PostMapping("/update")
     @UserRole(role = "user")
-    public BaseResponse<UserVO> updateUser(@RequestBody UserUpdateDto userUpdateDto,HttpServletRequest request) {
+    public BaseResponse<UserVO> updateUser(@RequestBody UserUpdateDto userUpdateDto,HttpServletRequest  request) {
         // 判空校验
         ThrowUtil.throwIf(userUpdateDto == null, ErrorCode.PARAMS_ERROR);
-        UserVO result = userService.updateUser(userUpdateDto,request);
+        User loginUser = userService.getLoginUser(request);
+        UserVO result = userService.updateUser(userUpdateDto,loginUser);
         return ResultUtil.success(result);
     }
 
@@ -147,13 +147,13 @@ public class UserController {
 
     @PostMapping("/page")
     @UserRole(role = "admin")
-    public BaseResponse<Page<UserVO>> listUser(@RequestBody UserPageDto userPageDto){
+    public BaseResponse<Page<UserVO>> listUser(@RequestBody UserQueryDto userQueryDto){
         // 1.判空校验
-        ThrowUtil.throwIf(userPageDto == null, ErrorCode.PARAMS_ERROR);
+        ThrowUtil.throwIf(userQueryDto == null, ErrorCode.PARAMS_ERROR);
         // 2.分页查询
         Page<User> page = userService.page(
-                new Page<>(userPageDto.getCurrent(), userPageDto.getPageSize()),
-                userService.getQueryWrapper(userPageDto));
+                new Page<>(userQueryDto.getCurrent(), userQueryDto.getPageSize()),
+                userService.getQueryWrapper(userQueryDto));
         Page<UserVO> userVOPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         List<UserVO> userVOList = page.getRecords()
                 .stream()
