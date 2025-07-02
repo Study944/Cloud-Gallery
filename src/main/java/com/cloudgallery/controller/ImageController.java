@@ -196,10 +196,22 @@ public class ImageController {
      * @param prompt
      * @param request
      */
-    @GetMapping("/generate")
+    @GetMapping("/generateImage")
     public BaseResponse<ImageVO> generateImages(String prompt, HttpServletRequest request) throws IOException {
         User loginUser = userService.getLoginUser(request);
         ImageVO result = imageService.generateImage(prompt, loginUser);
+        return ResultUtil.success(result);
+    }
+
+    /**
+     * AI生成图片描述
+     * @param imageId
+     * @param request
+     */
+    @GetMapping("/generateDescription")
+    public BaseResponse<ImageVO> generateDescription(Long imageId,HttpServletRequest request) throws Exception {
+        User loginUser = userService.getLoginUser(request);
+        ImageVO result = imageService.generateDescription(imageId, loginUser);
         return ResultUtil.success(result);
     }
 }

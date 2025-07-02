@@ -33,4 +33,6 @@ public interface ImageService extends IService<Image> {
     ImageVO generateImage(String prompt, User loginUser) throws IOException;
 
     void downloadImage(Long id, HttpServletResponse  response) throws IOException;
+
+    ImageVO generateDescription(Long imageId, User loginUser) throws IOException, InterruptedException;
 }

@@ -8,7 +8,7 @@ import com.cloudgallery.common.RoleUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.BusinessException;
 import com.cloudgallery.exception.ErrorCode;
-import com.cloudgallery.manager.ai.AiManager;
+import com.cloudgallery.manager.ai.SpringAiManager;
 import com.cloudgallery.manager.cos.CosManager;
 import com.cloudgallery.manager.cos.FileUploadManager;
 import com.cloudgallery.manager.cos.ImageUploadTemplate;
@@ -50,7 +50,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
     @Resource
     private CosManager cosManager;
     @Resource
-    private AiManager aiManager;
+    private SpringAiManager springAiManager;
     @Resource
     private SpaceService spaceService;
 
@@ -198,7 +198,7 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
      */
     @Override
     public ImageVO generateImage(String prompt, User loginUser) throws IOException {
-        String url = aiManager.generateImage(prompt);
+        String url = springAiManager.generateImage(prompt);
         ThrowUtil.throwIf(url == null, ErrorCode.OPERATION_ERROR, "生成图片失败");
         ImageUploadDto imageUploadDto = new ImageUploadDto();
         imageUploadDto.setName(prompt);
@@ -240,6 +240,34 @@ public class ImageServiceImpl extends ServiceImpl<ImageMapper, Image> implements
         }
     }
 
+    @Override
+    public ImageVO generateDescription(Long imageId, User loginUser) throws IOException, InterruptedException {
+        Image image = getById(imageId);
+        ThrowUtil.throwIf(image == null, ErrorCode.NOT_FOUND_ERROR, "图片不存在");
+        // 调用API生成图片描述
+        String descriptionPrompt = """
+        请生成一段图片相关的描述，在30字左右。
+        要求：描述内容与图片内容一致；
+        """;
+        String description = ImageDescriptionManager.callApiWithImage(image.getUrl(),descriptionPrompt);
+        ThrowUtil.throwIf(description == null||description=="", ErrorCode.OPERATION_ERROR, "生成图片描述失败");
+        ThrowUtil.throwIf(image.getUserId()!=loginUser.getId(), ErrorCode.NO_AUTH_ERROR,"生成描述："+description);
+        // 生成图片标签
+        String labelPrompt = """
+        请分析这张图片，并输出一组描述图片内容的关键词标签。要求：
+        1. 标签之间用英文逗号分隔；
+        2. 不超过 5 个标签；
+        3. 包括但不限于以下类别：主体对象、场景、颜色、风格、动作等；
+        4. 示例格式：风景,动物,绿色,自然,户外
+        """;
+        String label = ImageDescriptionManager.callApiWithImage(image.getUrl(),labelPrompt);
+        ThrowUtil.throwIf(label == null||label=="", ErrorCode.OPERATION_ERROR, "生成图片标签失败");
+        ThrowUtil.throwIf(image.getUserId()!=loginUser.getId(), ErrorCode.NO_AUTH_ERROR,"生成标签："+label);
+        image.setDescription(description);
+        image.setLabel(label);
+        updateById(image);
+        return ImageVO.imageToImageVO(image);
+    }
 
 
 }
