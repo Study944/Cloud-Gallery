@@ -26,6 +26,12 @@ public class SpaceController {
     @Resource
     UserService userService;
 
+    /**
+     * 创建空间
+     * @param spaceAddDto
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     @UserRole(role = "user")
     public BaseResponse<SpaceAddVO> addSpace(@RequestBody SpaceAddDto spaceAddDto, HttpServletRequest request){
@@ -35,6 +41,12 @@ public class SpaceController {
         return ResultUtil.success(spaceAddVO);
     }
 
+    /**
+     * 删除空间
+     * @param spaceId
+     * @param request
+     * @return
+     */
     @GetMapping("/delete")
     @UserRole(role = "user")
     public BaseResponse<Boolean> deleteSpace(@RequestParam Long spaceId, HttpServletRequest request){
@@ -44,6 +56,12 @@ public class SpaceController {
         return ResultUtil.success(delete);
     }
 
+    /**
+     * 修改空间
+     * @param spaceUpdateDto
+     * @param request
+     * @return
+     */
     @PostMapping("/update")
     @UserRole(role = "user")
     public BaseResponse<SpaceUpdateVO> updateSpace(@RequestBody SpaceUpdateDto spaceUpdateDto, HttpServletRequest request){
@@ -53,6 +71,12 @@ public class SpaceController {
         return ResultUtil.success(spaceUpdateVO);
     }
 
+    /**
+     * 获取空间
+     * @param spaceId
+     * @param request
+     * @return
+     */
     @GetMapping("/get")
     @UserRole(role = "user")
     public BaseResponse<Space> getSpace(@RequestParam Long spaceId, HttpServletRequest request){

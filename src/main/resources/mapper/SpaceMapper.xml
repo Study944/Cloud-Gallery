@@ -14,6 +14,7 @@
             <result property="size" column="size" jdbcType="INTEGER"/>
             <result property="maxNumber" column="max_number" jdbcType="INTEGER"/>
             <result property="number" column="number" jdbcType="INTEGER"/>
+            <result property="spaceType" column="space_type" jdbcType="TINYINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -21,7 +22,7 @@
     <sql id="Base_Column_List">
         id,name,user_id,
         description,level,max_size,
-        size,max_number,number,
+        size,max_number,number,space_type,
         create_time,update_time
     </sql>
 </mapper>

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 用户私有空间新增请求
+ * 用户空间新增请求
  */
 @Data
 public class SpaceAddDto implements Serializable {
@@ -20,6 +20,10 @@ public class SpaceAddDto implements Serializable {
      */
     private String description;
 
+    /**
+     * 空间类型
+     */
+    private Integer spaceType;
 
     private static final long serialVersionUID = 1L;
 }

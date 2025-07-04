@@ -6,6 +6,8 @@ import com.cloudgallery.common.BaseResponse;
 import com.cloudgallery.common.ResultUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.ErrorCode;
+import com.cloudgallery.manager.auth.SaSpaceCheckPermission;
+import com.cloudgallery.manager.auth.config.SpaceUserPermissionConstant;
 import com.cloudgallery.model.dto.image.ImageQueryDto;
 import com.cloudgallery.model.dto.image.ImageUpdateDto;
 import com.cloudgallery.model.dto.image.ImageUploadDto;
@@ -59,7 +61,7 @@ public class ImageController {
      * @param imageUploadDto
      * @param request
      */
-    @UserRole(role = "user")
+    @SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_UPLOAD)
     @PostMapping("/upload/url")
     public BaseResponse<ImageVO> uploadImageByUrl(@RequestBody ImageUploadDto imageUploadDto,
                                                   HttpServletRequest request) throws IOException {
@@ -142,7 +144,7 @@ public class ImageController {
      * @param id
      */
     @GetMapping("/deleteById")
-    @UserRole(role = "user")
+    @SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_DELETE)
     public BaseResponse<String> deleteImageById(@RequestParam("id") Long id, HttpServletRequest request){
         ThrowUtil.throwIf(id == null, ErrorCode.PARAMS_ERROR,"id不能为空");
         User loginUser = userService.getLoginUser(request);
@@ -155,7 +157,7 @@ public class ImageController {
      * @param imageUpdateDto
      */
     @PostMapping("/update")
-    @UserRole(role = "user")
+    @SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_EDIT)
     public BaseResponse<ImageVO> updateImage(@RequestBody ImageUpdateDto imageUpdateDto, HttpServletRequest request){
         User loginUser = userService.getLoginUser(request);
         ImageVO result = imageService.updateImage(imageUpdateDto, loginUser);

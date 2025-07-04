@@ -55,6 +55,11 @@ public class SpaceAddVO implements Serializable {
     private Long number;
 
     /**
+     * 空间类型: 0-个人，1-团队
+     */
+    private Integer spaceType;
+
+    /**
      * 创建时间
      */
     private Date createTime;

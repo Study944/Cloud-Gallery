@@ -60,6 +60,20 @@ create table if not exists space
 # 图片表添加空间Id字段
 alter table image add column space_id bigint default 0 comment '空间id';
 
+# 空间表添加空间类型字段
+alter table space add column space_type tinyint default 0 comment '空间类型: 0-个人，1-团队';
+
+# 用户-团队空间关系表
+create table if not exists user_space
+(
+    id  bigint primary key auto_increment comment '关系id',
+    user_id bigint not null comment '用户id',
+    space_id bigint not null comment '空间id',
+    space_role varchar(255) default 'viewer' comment 'viewer,editor,admin',
+    create_time datetime default current_timestamp comment '创建时间',
+    index idx_spaceId(space_id)
+)comment '用户-团队空间关系表' collate utf8mb4_unicode_ci;
+
 
 
 

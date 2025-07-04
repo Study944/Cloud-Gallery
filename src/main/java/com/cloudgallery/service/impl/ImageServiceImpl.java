@@ -8,6 +8,7 @@ import com.cloudgallery.common.RoleUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.BusinessException;
 import com.cloudgallery.exception.ErrorCode;
+import com.cloudgallery.manager.ai.ImageDescriptionManager;
 import com.cloudgallery.manager.ai.SpringAiManager;
 import com.cloudgallery.manager.cos.CosManager;
 import com.cloudgallery.manager.cos.FileUploadManager;

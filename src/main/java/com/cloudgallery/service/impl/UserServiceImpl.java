@@ -1,5 +1,6 @@
 package com.cloudgallery.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -9,6 +10,7 @@ import com.cloudgallery.common.RoleUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.constant.UserConstant;
 import com.cloudgallery.exception.ErrorCode;
+import com.cloudgallery.manager.auth.StpKit;
 import com.cloudgallery.model.dto.user.UserQueryDto;
 import com.cloudgallery.model.dto.user.UserUpdateDto;
 import com.cloudgallery.model.entity.User;
@@ -67,6 +69,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ThrowUtil.throwIf(!password.equals(user.getPassword()), ErrorCode.PARAMS_ERROR, "密码错误");
         //4.保存登录信息
         request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, user);
+        //5.保存登陆信息到sa-token
+        StpKit.SPACE.login(user.getId());
+        StpKit.SPACE.getSession().set(UserConstant.USER_LOGIN_STATE, user);
         return BeanUtil.copyProperties(user, UserVO.class);
     }
 
@@ -138,16 +143,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 更新用户信息-用户
      * @param userUpdateDto
-     * @param request
      */
     @Override
     public UserVO updateUser(UserUpdateDto userUpdateDto,User loginUser) {
         // 1.参数校验
-        ThrowUtil.throwIf(userUpdateDto.getId() == null, ErrorCode.PARAMS_ERROR);
+        ThrowUtil.throwIf(userUpdateDto.getUserId() == null, ErrorCode.PARAMS_ERROR);
         // 2.权限校验，只能修改自己的信息（当前登录用户ID==参数ID||当前登录用户为管理员）
-        RoleUtil.verifyRole(loginUser, userUpdateDto.getId());
+        RoleUtil.verifyRole(loginUser, userUpdateDto.getUserId());
         // 3.更新用户
-        User targetUser = getById(userUpdateDto.getId());
+        User targetUser = getById(userUpdateDto.getUserId());
         ThrowUtil.throwIf(targetUser == null, ErrorCode.NOT_FOUND_ERROR, "用户不存在");
         // 4.只更新允许的字段
         targetUser.setName(userUpdateDto.getName());

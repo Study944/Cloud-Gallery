@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 public class UserUpdateDto implements Serializable {
 
-    private Long id;
+    private Long userId;
 
     /**
      * 用户名

@@ -230,7 +230,7 @@ const fetchImages = async (searchName = '') => {
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }
-    const res = await fetch('/image/list/page', {
+    const res = await fetch('/image/list/page/vo', {
       method: 'POST',
       headers: headers,
       body: JSON.stringify(body)
@@ -288,8 +288,7 @@ const handleTagSearch = (tag) => {
 const handleLoginSuccess = (user) => {
   showLogin.value = false
   updateUserData()
-  current.value = 1
-  fetchImages(search.value.trim()) // 刷新图片列表并重置到第一页
+  window.location.reload() // 登录成功后刷新页面
 }
 
 // 上传成功处理

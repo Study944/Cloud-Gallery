@@ -1,5 +1,7 @@
 package com.cloudgallery.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudgallery.annotation.UserRole;
@@ -7,6 +9,7 @@ import com.cloudgallery.common.BaseResponse;
 import com.cloudgallery.common.ResultUtil;
 import com.cloudgallery.common.ThrowUtil;
 import com.cloudgallery.exception.ErrorCode;
+import com.cloudgallery.manager.auth.StpKit;
 import com.cloudgallery.model.dto.user.UserDto;
 import com.cloudgallery.model.dto.user.UserQueryDto;
 import com.cloudgallery.model.dto.user.UserUpdateDto;
@@ -135,7 +138,8 @@ public class UserController {
      * @param id
      */
     @PostMapping("/getById")
-    @UserRole(role = "user")
+//    @UserRole(role = "user")
+    @SaCheckRole(type = "space")
     public BaseResponse<UserVO> getUser(@RequestParam Long id) {
         // 判空校验
         ThrowUtil.throwIf(id == null, ErrorCode.PARAMS_ERROR);
@@ -145,6 +149,10 @@ public class UserController {
     }
 
 
+    /**
+     * 分页查询用户
+     * @param userQueryDto
+     */
     @PostMapping("/page")
     @UserRole(role = "admin")
     public BaseResponse<Page<UserVO>> listUser(@RequestBody UserQueryDto userQueryDto){

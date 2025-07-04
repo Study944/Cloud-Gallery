@@ -1,0 +1,62 @@
+{
+  "permissions": [
+    {
+      "key": "userSpace:admin",
+      "name": "空间管理员",
+      "description": "团队空间管理员"
+    },
+    {
+      "key": "picture:view",
+      "name": "浏览图片",
+      "description": "查找和浏览空间内图片"
+    },
+    {
+      "key": "picture:upload",
+      "name": "上传图片",
+      "description": "上传图片到团队空间"
+    },
+    {
+      "key": "picture:delete",
+      "name": "删除图片",
+      "description": "删除团队空间内的图片"
+    },
+    {
+      "key": "picture:edit",
+      "name": "修改图片",
+      "description": "修改团队空间内的图片"
+    }
+  ],
+  "roles": [
+    {
+      "key": "owner",
+      "name": "空间管理员",
+      "description": "团队空间管理员",
+      "permissions": [
+        "userSpace:admin",
+        "picture:view",
+        "picture:upload",
+        "picture:delete",
+        "picture:edit"
+      ]
+    },
+    {
+      "key": "editor",
+      "name": "空间编辑人员",
+      "description": "可操作空间内的图片",
+      "permissions": [
+        "picture:view",
+        "picture:upload",
+        "picture:delete",
+        "picture:edit"
+      ]
+    },
+    {
+      "key": "viewer",
+      "name": "空间浏览人员",
+      "description": "可浏览空间内的图片",
+      "permissions": [
+        "picture:view"
+      ]
+    }
+  ]
+}

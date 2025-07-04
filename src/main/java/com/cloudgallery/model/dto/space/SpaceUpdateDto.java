@@ -5,7 +5,10 @@ import lombok.Data;
 @Data
 public class SpaceUpdateDto {
 
-    private Long id;
+    /**
+     * 空间id
+     */
+    private Long spaceId;
 
     /**
      * 空间名称
