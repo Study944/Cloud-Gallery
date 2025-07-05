@@ -25,6 +25,4 @@ public @interface SaSpaceCheckPermission {
     @AliasFor(annotation = SaCheckPermission.class)
     String[] value() default {};
 
-
-
 }
